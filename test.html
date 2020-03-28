@@ -1,32 +1,27 @@
 <!DOCTYPE html><html>
 <head><title>Navigation Delegate Example</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>   
     <script src="https://surveyjs.azureedge.net/1.5.17/survey.ko.min.js"></script>
 </head>
 <body>
-
     <script>
-    window.alert("when does this show up");
-    window.onload = doLoad;
+        function doLoad() {
+        Survey.StylesManager.applyTheme("bootstrap");
 
+        var surveyJSON = {"pages":[{"name":"HappinessTodayPage","elements":[{"type":"radiogroup","name":"happinessToday","title":"How are you feeling today","isRequired":true,"choices":[{"value":"item1","text":"Happy"},{"value":"item2","text":"Neutral"},{"value":"item3","text":"Unhappy"}],"showClearButton":true}],"title":"Mental Health Check"},{"name":"didnotPickUnhappy","elements":[{"type":"html","name":"question1","visibleIf":"{happinessToday} <> 'item3'","html":"<H1>That's great</H1>\n<p>Glad to hear you are doing well. Hope it lasts until tomorrow! </p>"},{"type":"rating","name":"howHappyAreYou","title":"So on a scale of 1 to 10, how happy are you.","isRequired":true,"rateMax":10,"minRateDescription":"contented","maxRateDescription":"ecstatic"}],"title":"Doing fine"},{"name":"didPickUnhappy","elements":[{"type":"html","name":"question2","html":"<H1>So..you are unhappy</H1>\n<p>Sorry to hear you are feeling down</p>\n<p>Maybe a picture of some kittens will help to lift your mood</p>\n"},{"type":"image","name":"question3","visibleIf":"{happinessToday} = 'item3'","imageLink":"https://e3.365dm.com/19/04/1600x900/skynews-kitten-cat_4627790.jpg?bypass-service-worker&20190403095801","imageFit":"fill"}],"visibleIf":"{happinessToday} = 'item3'","title":"So... you are unhappy"}],"showPageTitles":false};        var survey = new Survey.Model(surveyJSON, "surveyContainer");
+        survey.onComplete.add(sendDataToServer);    
+        }
+ 
+function sendDataToServer(survey) {
+    //send Ajax request to your web server.
+    alert("The results are:" + JSON.stringify(survey.data));
+}
 
-    function doLoad() {
-    /*alert("how about this?");*/
-    Survey.StylesManager.applyTheme("bootstrap");
-    
-    const surveyJSON = {"pages":[{"name":"HappinessTodayPage","elements":[{"type":"radiogroup","name":"happinessToday","title":"How are you feeling today","isRequired":true,"choices":[{"value":"item1","text":"Happy"},{"value":"item2","text":"Neutral"},{"value":"item3","text":"Unhappy"}],"showClearButton":true}],"title":"Mental Health Check"},{"name":"didnotPickUnhappy","elements":[{"type":"html","name":"question1","visibleIf":"{happinessToday} <> 'item3'","html":"<H1>That's great</H1>\n<p>Glad to hear you are doing well. Hope it lasts until tomorrow! </p>"},{"type":"rating","name":"howHappyAreYou","title":"So on a scale of 1 to 10, how happy are you.","isRequired":true,"rateMax":10,"minRateDescription":"contented","maxRateDescription":"ecstatic"}],"title":"Doing fine"},{"name":"didPickUnhappy","elements":[{"type":"html","name":"question2","html":"<H1>So..you are unhappy</H1>\n<p>Sorry to hear you are feeling down</p>\n<p>Maybe a picture of some kittens will help to lift your mood</p>\n"},{"type":"image","name":"question3","visibleIf":"{happinessToday} = 'item3'","imageLink":"https://e3.365dm.com/19/04/1600x900/skynews-kitten-cat_4627790.jpg?bypass-service-worker&20190403095801","imageFit":"fill"}],"title":"So... you are unhappy"}],"showPageTitles":false};
-    var survey = new Survey.Model(surveyJSON, "surveyContainer");
-    survey.onComplete.add(sendDataToServer);
-    }
-    
-    function sendDataToServer(survey) {
-        //send Ajax request to your web server.
-        alert("The results are:" + JSON.stringify(survey.data));
-    }
-    
+window.onload = doLoad;
+
     </script>
 
-<h1> does this show?</h1>
 <div id="surveyContainer"></div>   
 </body>
 </html>
