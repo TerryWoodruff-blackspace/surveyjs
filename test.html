@@ -1,0 +1,32 @@
+<!DOCTYPE html><html>
+<head><title>Navigation Delegate Example</title>
+    <script src="https://ajax.aspnetcdn.com/ajax/knockout/knockout-3.5.0.js"></script>   
+    <script src="https://surveyjs.azureedge.net/1.5.17/survey.ko.min.js"></script>
+</head>
+<body>
+
+    <script>
+    window.alert("when does this show up");
+    window.onload = doLoad;
+
+
+    function doLoad() {
+    /*alert("how about this?");*/
+    Survey.StylesManager.applyTheme("bootstrap");
+    
+    var surveyJSON = {"pages":[{"name":"HappinessTodayPage","elements":[{"type":"radiogroup","name":"happinessToday","title":"How are you feeling today","isRequired":true,"choices":[{"value":"item1","text":"Happy"},{"value":"item2","text":"Neutral"},{"value":"item3","text":"Unhappy"}],"showClearButton":true}],"title":"Mental Health Check"},{"name":"didnotPickUnhappy","elements":[{"type":"html","name":"question1","visibleIf":"{happinessToday} <> 'item3'","html":"<H1>That's great</H1>\n<p>Glad to hear you are doing well. Hope it lasts until tomorrow! </p>"}],"title":"Doing fine"},{"name":"didPickUnhappy","elements":[{"type":"html","name":"question2","html":"<H1>So..you are unhappy</H1>\n<p>Sorry to hear you are feeling down</p>\n<p>Maybe a picture of some kittens will help to lift your mood</p>\n"},{"type":"image","name":"question3","visibleIf":"{happinessToday} = 'item3'","imageLink":"https://surveyjs.io/Content/Images/examples/image-picker/lion.jpg","imageFit":"fill"}],"title":"So... you are unhappy"}],"cookieName":"happynessToday","showPageTitles":false}
+    var survey = new Survey.Model(surveyJSON, "surveyContainer");
+    survey.onComplete.add(sendDataToServer);
+    }
+    
+    function sendDataToServer(survey) {
+        //send Ajax request to your web server.
+        alert("The results are:" + JSON.stringify(survey.data));
+    }
+    
+    </script>
+
+<h1> does this show?</h1>
+<div id="surveyContainer"></div>   
+</body>
+</html>
