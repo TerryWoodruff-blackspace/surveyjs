@@ -14,7 +14,7 @@
         function doLoad() {
             Survey.StylesManager.applyTheme("bootstrap");
 
-            var surveyJSON = var surveyJSON = {pages:[{name:"page1",elements:[{type:"image",name:"question1",imageLink:"https://github.com/TerryWoodruff-blackspace/surveyjs/blob/master/Hand%20Washing%20-%2034091.mp4",contentMode:"video"}]}]};
+            var surveyJSON = {pages:[{name:"page1",elements:[{type:"image",name:"question1",imageLink:"https://github.com/TerryWoodruff-blackspace/surveyjs/blob/master/Hand%20Washing%20-%2034091.mp4",contentMode:"video"}]}]};
 
             var survey = new Survey.Model(surveyJSON, "surveyContainer");
             survey.onComplete.add(sendDataToServer);
